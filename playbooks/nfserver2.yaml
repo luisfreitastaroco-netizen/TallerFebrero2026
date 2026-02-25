@@ -1,0 +1,71 @@
+---
+- hosts: fileserver
+  become: true
+
+  tasks:
+    # --- 1. INSTALACIÓN ---
+    - name: Instalar paquetes NFS (CentOS 9 usa nfs-utils)
+      ansible.builtin.dnf:
+        name:
+          - nfs-utils
+          - rpcbind
+        state: latest
+        update_cache: yes
+
+    # --- 2. REPARACIÓN DE SYSTEMD ---
+    - name: Forzar recarga de systemd (Vital en CentOS 9 tras instalar)
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    # --- 3. SERVICIOS (Orden estricto) ---
+    - name: Iniciar rpcbind primero
+      ansible.builtin.service:
+        name: rpcbind
+        state: started
+        enabled: yes
+
+    - name: Iniciar nfs-server
+      ansible.builtin.service:
+        name: nfs-server
+        state: started
+        enabled: yes
+
+    # --- 4. CONFIGURACIÓN DE CARPETA ---
+    - name: Crear carpeta compartida
+      ansible.builtin.file:
+        path: /srv/nfs/shared
+        state: directory
+        mode: '0777'
+
+    - name: Configurar archivo exports
+      ansible.builtin.lineinfile:
+        path: /etc/exports
+        line: "/srv/nfs/shared 192.168.10.0/24(rw,sync,no_root_squash)"
+        state: present
+      notify: aplicar_exports
+
+    # --- 5. FIREWALL (Servicios y Puerto 2049) ---
+    - name: Abrir servicios NFS en Firewall
+      ansible.posix.firewalld:
+        service: "{{ item }}"
+        permanent: yes
+        state: enabled
+        immediate: yes
+      loop:
+        - nfs
+        - rpc-bind
+        - mountd
+
+    - name: Abrir puerto 2049 (NFSv4) TCP y UDP
+      ansible.posix.firewalld:
+        port: "{{ item }}"
+        permanent: yes
+        state: enabled
+        immediate: yes
+      loop:
+        - 2049/tcp
+        - 2049/udp
+
+  handlers:
+    - name: aplicar_exports
+      ansible.builtin.command: exportfs -ra
