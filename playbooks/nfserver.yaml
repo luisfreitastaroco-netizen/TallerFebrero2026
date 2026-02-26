@@ -47,7 +47,7 @@
         firewall-cmd --reload
       ignore_errors: yes
 
-    - name: Abrir puerto 2049 para NFSv4
+    - name: 8. Abrir puerto 2049 para NFSv4
       ansible.posix.firewalld:
         port: "{{ item }}"
         permanent: yes
@@ -56,6 +56,13 @@
       loop:
         - 2049/tcp
         - 2049/udp
+
+    -  name: 9. Copiar archivo de prueba en el server
+       ansible.builtin.template:
+         src: ../templates/README-NFS.j2
+         dest: /srv/nfs/shared/README-NFS.txt
+         owner: nobody
+         mode: u=r,g=r,o=r
 
   handlers:
     - name: exportar

@@ -1,0 +1,42 @@
+---
+- hosts: ubuntu
+  become: true
+
+  tasks:
+    - name: 1. Instalar paquetes de requerimientos para automount
+      ansible.builtin.apt:
+        name:
+          - autofs
+          - nfs-common
+          - python3
+        state: present
+        update_cache: true
+
+    - name: 2. Crear el Archivo nmaster (Basado en nfs_autofs)
+      ansible.builtin.copy:
+        # Usamos el nombre exacto que mostró tu ls -R
+        src: /home/sysadmin/TallerFebrero2026/files/nfs_autofs
+        dest: /etc/auto.master.d/nfs.autofs
+        owner: root
+        mode: '0644'
+
+    - name: 3. Agregar mapa de carpeta (Basado en auto.fs)
+      ansible.builtin.copy:
+        # Usamos el nombre exacto que mostró tu ls -R
+        src: /home/sysadmin/TallerFebrero2026/files/auto.fs
+        dest: /etc/auto.nfs
+        owner: root
+        mode: '0644'
+      notify: Reiniciar autofs
+
+    - name: 4. Iniciar servicio Autofs
+      ansible.builtin.systemd_service:
+        name: autofs
+        state: started
+        enabled: yes
+
+  handlers:
+    - name: Reiniciar autofs
+      ansible.builtin.systemd_service:
+        name: autofs
+        state: restarted
