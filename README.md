@@ -1,5 +1,7 @@
 # Obligatorio Taller de servidores linux 2026
 
+Este repositorio contiene la configuración automatizada mediante Ansible para el despliegue de una infraestructura de red funcional que integra servicios de almacenamiento compartido y servicios web sobre sistemas híbridos (CentOS y Ubuntu)
+
 **1. Objetivo**
 
     Construir una infraestructura mínima y reproducible, automatizada con Ansible y versionada en
