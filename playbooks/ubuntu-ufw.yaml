@@ -1,0 +1,28 @@
+---
+- hosts: ubuntu
+  become: yes
+
+  tasks:
+
+  - name: Deshabilitar y restablecer ufw
+    community.general.ufw:
+      state: reset
+
+  - name: Permitir tráfico saliente
+    community.general.ufw:
+      policy: allow
+      direction: outgoing
+
+  - name: Denegar tráfico entrante
+    community.general.ufw:
+      policy: deny
+      direction: incoming
+
+  - name: Permitir OpenSSH
+    community.general.ufw:
+      rule: allow
+      name: OpenSSH
+
+  - name: Habilitar el firewall ufw
+    community.general.ufw:
+      state: enabled

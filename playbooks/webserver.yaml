@@ -1,0 +1,35 @@
+---
+- hosts: ubuntu
+  become: yes
+
+  tasks:
+
+  - name: Copiar el archivo de unidad del servidor web
+    ansible.builtin.copy:
+      src: ../files/shared-http.service
+      dest: /etc/systemd/system/shared-http.service
+      owner: root
+      group: root
+      mode: '0644'
+    notify: Reiniciar el servicio del servidor web
+
+  - name: Iniciar el servidor web
+    ansible.builtin.systemd_service:
+      name: shared-http.service
+      state: started
+      daemon_reload: yes
+      enabled: yes
+
+  - name: Abrir el puerto 8080
+    community.general.ufw:
+      rule: allow
+      port: '8080'
+      proto: tcp
+
+  handlers:
+
+  - name: Reiniciar el servicio del servidor web
+    ansible.builtin.systemd_service:
+      name: shared-http
+      state: restarted
+      daemon_reload: yes
