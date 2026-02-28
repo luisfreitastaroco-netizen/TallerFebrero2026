@@ -36,7 +36,7 @@ Este repositorio contiene la configuración automatizada mediante Ansible para e
     ├── files/                # Archivos estáticos para distribución
     ├── group_vars/           # Variables de configuración por grupos
     ├── inventories/
-    │   └── hosts.ini         # Definición de nodos (nfs01, app01)
+    │   └── hosts.ini         # Definición de nodos (centos01, ubuntu01)
     ├── playbooks/
     │   ├── hardening.yaml    # Configuración de seguridad inicial
     │   ├── nfs-client.yaml   # Configuración de autofs en Ubuntu    
@@ -46,10 +46,10 @@ Este repositorio contiene la configuración automatizada mediante Ansible para e
     ├── templates/            # Plantillas Jinja2 dinámicas
     │   ├── auto.fs           # Configuración de mapas de autofs
     │   ├── nfs_autofs        # Configuración de puntos de montaje
-    │   ├── shared-http.service # Unit file de Systemd para Python
+    │   ├── shared-http.service # Unidad de archivos de Systemd para Python
     │   └── README-NFS.j2     # Documentación dinámica para el compartido
     ├── requirements.yaml     # Dependencias de roles/colecciones
-    ├── site.yaml             # Playbook maestro (orquestador)
+    ├── site.yaml             # Playbook maestro (ejecutable)
     ├── LICENSE
     └── README.md
  
