@@ -1,1 +1,1 @@
-/mnt /etc/auto.nfs --ghost
+mnt /etc/auto.nfs --ghost
