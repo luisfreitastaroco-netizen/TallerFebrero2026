@@ -20,8 +20,36 @@ Este repositorio contiene la configuración automatizada mediante Ansible para e
   **2. Arquitectura**
   
   
-    Nodos (mínimo)
+    Nodos (mínimo)Estructura del Repositorio
+
   
     ● nfs01 (CentOS Stream 9): servidor NFS
 
     ● app01 (Ubuntu 24.04): cliente con autofs + servicio HTTP systemd
+
+**3. Estructura del Repositorio**
+
+    La organización del proyecto sigue las mejores prácticas de Ansible:
+
+    .
+    ├── collections/          # Colecciones externas de Ansible
+    ├── files/                # Archivos estáticos para distribución
+    ├── group_vars/           # Variables de configuración por grupos
+    ├── inventories/
+    │   └── hosts.ini         # Definición de nodos (nfs01, app01)
+    ├── playbooks/
+    │   ├── hardening.yaml    # Configuración de seguridad inicial
+    │   ├── nfs-client.yaml   # Configuración de autofs en Ubuntu    
+    │   ├── nfserver.yaml     # Configuración de exportaciones en CentOS
+    │   ├── ubuntu-ufw.yaml   # Reglas de firewall para el cliente
+    │   └── webserver.yaml    # Despliegue del servicio Python http.server
+    ├── templates/            # Plantillas Jinja2 dinámicas
+    │   ├── auto.fs           # Configuración de mapas de autofs
+    │   ├── nfs_autofs        # Configuración de puntos de montaje
+    │   ├── shared-http.service # Unit file de Systemd para Python
+    │   └── README-NFS.j2     # Documentación dinámica para el compartido
+    ├── requirements.yaml     # Dependencias de roles/colecciones
+    ├── site.yaml             # Playbook maestro (orquestador)
+    ├── LICENSE
+    └── README.md
+ 
