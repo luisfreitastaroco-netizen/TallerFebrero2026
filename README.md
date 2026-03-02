@@ -53,9 +53,21 @@ de red funcional que integra servicios de almacenamiento compartido y servicios 
     ├── site.yaml             # Playbook maestro (ejecutable)
     ├── LICENSE
     └── README.md
- 
 
-**4. Requisitos Previos**
+ 
+**4.Topología (IPs / Hostnames)**
+
+    La infraestructura se basa en una red segmentada por roles, 
+    utilizando IPs estáticas para asegurar la persistencia de los montajes NFS.
+
+    Hostname	IP	S.O.	        Rol / Grupo Ansible
+
+    nfs01	    192.168.10.11	    CentOS Stream 9	fileserver (Servidor NFS)
+    ubuntu01	192.168.10.21	    Ubuntu 24.04	appserver (Cliente + HTTP)
+    ubuntu02	192.168.10.22	    Ubuntu 24.04	appserver (Nodo secundario)
+
+
+**5. Requisitos Previos**
 
     Para asegurar una ejecución exitosa del proyecto, verifica el cumplimiento de los siguientes puntos:
     En la Máquina de Control
@@ -113,3 +125,34 @@ de red funcional que integra servicios de almacenamiento compartido y servicios 
 
     Conectividad de Red: Los nodos deben tener comunicación entre sí (ping) y salida a internet
     para la instalación de paquetes (nfs-utils, autofs, python3).
+
+
+
+**5. Ejecucion de la solucion**
+
+    ### Ejecutar el playbook principal
+
+    ---bash
+    # Ejecutar todos los playbooks
+        ansible-playbook -i inventories/hosts.ini site.yaml
+
+    # Ejecutar un playbook específico
+        ansible-playbook -i inventories/hosts.ini playbooks/webserver.yaml
+
+    # Modo de prueba
+        ansible-playbook -i inventories/hosts.ini site.yaml --check
+
+    # Modo verbose para debugging
+        ansible-playbook -i inventories/hosts.ini site.yaml -vvv ---
+
+    ### Ejecutar playbooks individuales
+
+    ---bash
+    # Solo configurar firewall
+        ansible-playbook -i inventories/hosts.ini playbooks/ubuntu-ufw.yaml
+
+    # Solo configurar NFS server
+        ansible-playbook -i inventories/hosts.ini playbooks/nfserver.yaml
+
+    # Solo hardening de seguridad
+        ansible-playbook -i inventories/hosts.ini playbooks/hardening.yaml
