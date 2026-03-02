@@ -59,10 +59,12 @@ de red funcional que integra servicios de almacenamiento compartido y servicios 
 
     La infraestructura se basa en una red segmentada por roles, 
     utilizando IPs estáticas para asegurar la persistencia de los montajes NFS.
+    #El fileserver nfs01 sera etiquetado en ansible como centos01
 
     Hostname	IP	S.O.	        Rol / Grupo Ansible
 
-    nfs01	    192.168.10.11	    CentOS Stream 9	fileserver (Servidor NFS)
+    centos01    192.168.10.11       Centos Stream 9     Servidor Centos 
+    Centos02    192.168.10.12       Centos Stream 9     Servidor backup 
     ubuntu01	192.168.10.21	    Ubuntu 24.04	appserver (Cliente + HTTP)
     ubuntu02	192.168.10.22	    Ubuntu 24.04	appserver (Nodo secundario)
 
@@ -120,8 +122,7 @@ de red funcional que integra servicios de almacenamiento compartido y servicios 
 
     
     
-    Privilegios de Superusuario: El usuario definido en el inventario debe tener permisos de sudo configurados
-    (preferentemente NOPASSWD) para permitir la ejecución de tareas administrativas.
+    Privilegios de Superusuario: El usuario definido en el inventario debe tener permisos de sudo configurados para permitir la ejecución de tareas administrativas.
 
     Conectividad de Red: Los nodos deben tener comunicación entre sí (ping) y salida a internet
     para la instalación de paquetes (nfs-utils, autofs, python3).
@@ -156,3 +157,8 @@ de red funcional que integra servicios de almacenamiento compartido y servicios 
 
     # Solo hardening de seguridad
         ansible-playbook -i inventories/hosts.ini playbooks/hardening.yaml
+
+    # solo configurar NFS Client
+        ansible-playbook -i inventories/hosts.ini playbooks/nfcclient.yaml
+
+
