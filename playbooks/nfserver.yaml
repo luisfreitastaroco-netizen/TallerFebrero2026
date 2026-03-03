@@ -21,8 +21,8 @@
 
     - name: 4. Intentar iniciar nfs-utils de forma genérica
       ansible.builtin.shell: |
-        systemctl daemon-reload
-        systemctl enable nfs-server
+        systemctl daemon-reload && \
+        systemctl enable nfs-server && \
         systemctl start nfs-server
       ignore_errors: yes
 
@@ -44,6 +44,7 @@
         firewall-cmd --permanent --add-service=nfs
         firewall-cmd --permanent --add-service=rpc-bind
         firewall-cmd --permanent --add-service=mountd
+        firewall-cmd --permanent --add-port=8080/tcp
         firewall-cmd --reload
       ignore_errors: yes
 
@@ -56,6 +57,7 @@
       loop:
         - 2049/tcp
         - 2049/udp
+        - 8080/tcp
 
     -  name: 9. Copiar archivo de prueba en el server
        ansible.builtin.template:

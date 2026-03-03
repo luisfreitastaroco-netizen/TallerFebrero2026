@@ -1,6 +1,6 @@
 ---
 #Importar todos los playbooks 
-- import_playbook: playbooks/hardening.yaml
+#- import_playbook: playbooks/hardening.yaml
 - import_playbook: playbooks/nfserver.yaml
 - import_playbook: playbooks/nfs-client.yaml 
 - import_playbook: playbooks/ubuntu-ufw.yaml 
