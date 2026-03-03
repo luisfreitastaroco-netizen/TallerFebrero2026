@@ -122,7 +122,8 @@ de red funcional que integra servicios de almacenamiento compartido y servicios 
 
     
     
-    Privilegios de Superusuario: El usuario definido en el inventario debe tener permisos de sudo configurados para permitir la ejecución de tareas administrativas.
+    Privilegios de Superusuario: El usuario definido en el inventario debe tener permisos
+    de sudo configurados para permitir la ejecución de tareas administrativas.
 
     Conectividad de Red: Los nodos deben tener comunicación entre sí (ping) y salida a internet
     para la instalación de paquetes (nfs-utils, autofs, python3).
