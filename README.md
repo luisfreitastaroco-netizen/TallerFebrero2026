@@ -160,5 +160,20 @@ de red funcional que integra servicios de almacenamiento compartido y servicios 
 
     # solo configurar NFS Client
         ansible-playbook -i inventories/hosts.ini playbooks/nfcclient.yaml
+        
+    # solo para configurar web server
+        ansible-playbook -i inventories/hosts.ini playbooks/webserver.yaml
+        
+
+**6. Referencias**
+
+    Este proyecto a sido realizado por Mathias Cenas y Luis Freitas, 
+    basandonos en las siguientes referencias:
+    
+        Github del docenente Enrique Verdes  https://github.com/emverdes/TallerFebrero2026
+        
+        Web de Ansible  https://docs.ansible.com/
+        
+        Se ha utilizado la IA google gemini como fuente de consulta y validacion
 
 
